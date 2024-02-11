@@ -5,8 +5,10 @@ import axios from "axios";
 import PlaceImg from "../PlaceImg";
 export default function PlacesPage() {
   const [places,setPlaces] = useState([]);
+  const API_URL = 'http://localhost:3000/api'
   useEffect(() => {
-    axios.get('http://localhost:3000/api/user-places').then(({data}) => {
+
+    axios.get(API_URL + '/user-places').then(({data}) => {
       setPlaces(data);
     });
   }, []);

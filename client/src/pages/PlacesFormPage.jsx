@@ -18,6 +18,7 @@ export default function PlacesFormPage() {
   const [maxGuests,setMaxGuests] = useState(1);
   const [price,setPrice] = useState(100);
   const [redirect,setRedirect] = useState(false);
+
   useEffect(() => {
     if (!id) {
       return;
@@ -62,6 +63,7 @@ export default function PlacesFormPage() {
       description, perks, extraInfo,
       checkIn, checkOut, maxGuests, price,
     };
+    console.log(placeData)
     if (id) {
       // update
       await axios.put('/places', {
