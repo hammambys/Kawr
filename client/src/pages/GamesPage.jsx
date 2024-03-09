@@ -9,6 +9,7 @@ export default function GamesPage() {
   useEffect(() => {
     axios.get(API_URL + "/user-games").then(({ data }) => {
       setGames(data);
+      console.log(data);
     });
   }, []);
   return (

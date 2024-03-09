@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AccountNav from "../AccountNav.jsx";
 import { Navigate, useParams } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 export default function GamesFormPage() {
   const { id } = useParams();
@@ -11,9 +14,9 @@ export default function GamesFormPage() {
   const [description, setDescription] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [datetime, setDatetime] = useState("");
-  const [price, setPrice] = useState(100);
+  const [price, setPrice] = useState(0);
   //const [players, setPlayers] = useState([]);
-  const [maxPlayers, setMaxPlayers] = useState(1);
+  const [maxPlayers, setMaxPlayers] = useState(12);
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
@@ -26,7 +29,7 @@ export default function GamesFormPage() {
       setLocation(data.location);
       setDescription(data.description);
       setAddedPhotos(data.photos);
-      setDatetime(data.datetime);
+      setDatetime(new Date(data.datetime));
       setPrice(data.price);
       //setPlayers(data.players);
       setMaxPlayers(data.maxPlayers);
@@ -110,35 +113,38 @@ export default function GamesFormPage() {
         <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           <Players selected={players} onChange={setPlayers} />
         </div>*/}
-        {preInput(
-          "Check in&out times",
-          "add check in and out times, remember to have some time window for cleaning the room between guests"
-        )}
         <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Date and time</h3>
-            <input
-              type="text"
-              value={datetime}
-              onChange={(ev) => setDatetime(ev.target.value)}
-              placeholder="14"
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                value={datetime}
+                onChange={(date) => setDatetime(date)}
+              />
+            </LocalizationProvider>
           </div>
           <div>
             <h3 className="mt-2 -mb-1">Max number of players</h3>
             <input
               type="number"
+              max={16}
+              min={12}
               value={maxPlayers}
               onChange={(ev) => setMaxPlayers(ev.target.value)}
             />
           </div>
           <div>
             <h3 className="mt-2 -mb-1">Price per player</h3>
-            <input
-              type="number"
-              value={price}
-              onChange={(ev) => setPrice(ev.target.value)}
-            />
+            <div className="flex align-middle">
+              <input
+                type="number"
+                max={15}
+                min={0}
+                value={price}
+                onChange={(ev) => setPrice(ev.target.value)}
+              />
+              TND
+            </div>
           </div>
         </div>
         <button className="primary my-4">Save</button>

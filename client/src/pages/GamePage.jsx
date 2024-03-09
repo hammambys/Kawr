@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BookingWidget from "../BookingWidget";
-import GameGallery from "../GameGallery";
 import AddressLink from "../AddressLink";
 
 export default function GamePage() {
