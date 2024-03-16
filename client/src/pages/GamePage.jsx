@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BookingWidget from "../BookingWidget";
 import AddressLink from "../AddressLink";
+import GameGallery from "../GameGallery";
+import { format } from "date-fns";
 
 export default function GamePage() {
   const { id } = useParams();
@@ -29,7 +31,14 @@ export default function GamePage() {
             <h2 className="font-semibold text-2xl">Description</h2>
             {game.description}
           </div>
-          Check-in: {game.datetime}
+          <div>
+            {"datetime" in game &&
+              "Date: " + format(new Date(game.datetime), "dd/mm/yyyy")}
+          </div>
+          <div>
+            {"datetime" in game &&
+              "Time: " + format(new Date(game.datetime), "HH:mm")}
+          </div>
           <br />
           Max number of players: {game.maxPlayers}
         </div>

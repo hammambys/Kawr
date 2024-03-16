@@ -1,17 +1,17 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import AddressLink from "../AddressLink";
-import PlaceGallery from "../PlaceGallery";
+import GameGallery from "../GameGallery";
 import BookingDates from "../BookingDates";
 
 export default function BookingPage() {
-  const {id} = useParams();
-  const [booking,setBooking] = useState(null);
+  const { id } = useParams();
+  const [booking, setBooking] = useState(null);
   useEffect(() => {
     if (id) {
-      axios.get('/bookings').then(response => {
-        const foundBooking = response.data.find(({_id}) => _id === id);
+      axios.get("/bookings").then((response) => {
+        const foundBooking = response.data.find(({ _id }) => _id === id);
         if (foundBooking) {
           setBooking(foundBooking);
         }
@@ -20,13 +20,13 @@ export default function BookingPage() {
   }, [id]);
 
   if (!booking) {
-    return '';
+    return "";
   }
 
   return (
     <div className="my-8">
-      <h1 className="text-3xl">{booking.place.title}</h1>
-      <AddressLink className="my-2 block">{booking.place.address}</AddressLink>
+      <h1 className="text-3xl">{booking.game.title}</h1>
+      <AddressLink className="my-2 block">{booking.game.address}</AddressLink>
       <div className="bg-gray-200 p-6 my-6 rounded-2xl flex items-center justify-between">
         <div>
           <h2 className="text-2xl mb-4">Your booking information:</h2>
@@ -37,7 +37,7 @@ export default function BookingPage() {
           <div className="text-3xl">${booking.price}</div>
         </div>
       </div>
-      <PlaceGallery place={booking.place} />
+      <GameGallery game={booking.game} />
     </div>
   );
 }
