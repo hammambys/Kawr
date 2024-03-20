@@ -41,6 +41,7 @@ export default function GamesPage() {
             <Link
               to={"/account/games/" + game._id}
               className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
+              key={game._id}
             >
               <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
                 <GameImg game={game} />

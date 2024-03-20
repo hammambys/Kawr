@@ -21,7 +21,6 @@ export default function BookingWidget({ game }) {
       name,
       phone,
       game: game._id,
-      price: game.price,
     });
     const bookingId = response.data._id;
     setRedirect(`/account/bookings/${bookingId}`);
@@ -59,8 +58,7 @@ export default function BookingWidget({ game }) {
         }
       </div>
       <button onClick={bookThisGame} className="primary mt-4">
-        Book this game
-        {<span> ${game.price}</span>}
+        Request join
       </button>
     </div>
   );

@@ -19,18 +19,18 @@ const port = 3000;
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-const jwtSecret = "fasefraw4r5r3wq45wdfgw34twdfg";
+const jwtSecret = "fasefraw4r5r3wq45wdfgw3";
 const bucket = "dawid-booking-app";
 
 app.use(express.json());
-app.use(cookieParser());
-app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5173",
+    origin: "http://localhost:5173",
   })
 );
+app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -44,10 +44,6 @@ function getUserDataFromReq(req) {
     });
   });
 }
-
-app.get("/api/test", (req, res) => {
-  res.json("test ok");
-});
 
 app.post("/api/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -87,7 +83,7 @@ app.post("/api/login", async (req, res) => {
       res.status(422).json("pass not ok");
     }
   } else {
-    res.json("not found");
+    res.status(400).json("not found");
   }
 });
 
@@ -148,7 +144,7 @@ app.post("/api/upload", upload.array("photos", 5), async (req, res) => {
 });
 
 app.post("/api/games", (req, res) => {
-  //const {token} = req.cookies;
+  const { token } = req.cookies;
   const {
     title,
     location,
@@ -158,17 +154,21 @@ app.post("/api/games", (req, res) => {
     price,
     maxPlayers,
   } = req.body;
-  /*jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-    //console.log(userData)
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     if (err) throw err;
     const gameDoc = await Game.create({
-      owner:userData.id,price,
-      title,address,photos:addedPhotos,description,
-      perks,extraInfo,checkIn,checkOut,maxGuests,
+      owner: userData.id,
+      title,
+      location,
+      description,
+      photos: addedPhotos,
+      datetime,
+      price,
+      maxPlayers,
     });
     res.json(gameDoc);
-  });*/
-  const gameDoc = Game.create({
+  });
+  /*const gameDoc = Game.create({
     title,
     location,
     description,
@@ -177,15 +177,15 @@ app.post("/api/games", (req, res) => {
     price,
     maxPlayers,
   });
-  res.json(gameDoc);
+  res.json(gameDoc);*/
 });
 
 app.get("/api/user-games", async (req, res) => {
-  /*const {token} = req.cookies;
+  const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-    const {id} = userData;
-    res.json( await Game.find({owner:id}) );
-  });*/
+    const { id } = userData;
+    res.json(await Game.find({ owner: id }));
+  });
   res.json(await Game.find());
 });
 
@@ -244,17 +244,13 @@ app.get("/api/games", async (req, res) => {
 
 app.post("/api/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
-  const { game, checkIn, checkOut, numberOfGuests, name, phone, price } =
-    req.body;
+  const { game, name, phone } = req.body;
   Booking.create({
     game,
-    checkIn,
-    checkOut,
-    numberOfGuests,
     name,
     phone,
-    price,
     user: userData.id,
+    status: "pending",
   })
     .then((doc) => {
       res.json(doc);

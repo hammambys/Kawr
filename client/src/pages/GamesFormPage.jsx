@@ -13,7 +13,7 @@ export default function GamesFormPage() {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [datetime, setDatetime] = useState("");
+  const [datetime, setDatetime] = useState(new Date());
   const [price, setPrice] = useState(0);
   //const [players, setPlayers] = useState([]);
   const [maxPlayers, setMaxPlayers] = useState(12);

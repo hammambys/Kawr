@@ -28,8 +28,12 @@ export default function GamePage() {
       <div className="mt-8 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
         <div>
           <div className="my-4">
+            <h2 className="font-semibold text-2xl">Owner</h2>
+            {game.owner?.name ? game.owner?.name : "foulen fouleni"}
+          </div>
+          <div className="my-4">
             <h2 className="font-semibold text-2xl">Description</h2>
-            {game.description}
+            {game.description ? game.description : "No description"}
           </div>
           <div>
             {"datetime" in game &&
